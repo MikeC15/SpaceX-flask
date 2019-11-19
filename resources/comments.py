@@ -34,3 +34,10 @@ def create_comments():
     print('MODEL_TODICT(COMMENT):', model_to_dict(comment))
     comment_dict = model_to_dict(comment)
     return jsonify(data=comment_dict, status={"code": 201, "message": "Successfully created"})
+
+# show route
+@comment.route('/<id>', methods=['GET'])
+def get_one_comment(id):
+    print("COMMENT-ID:",id)
+    comment = models.Comment.get_by_id(id)
+    return jsonify(data=model_to_dict(comment), status={"code": 200, "message": "success"})
