@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, g
 from flask_cors import CORS
 from resources.users import user
+from resources.comments import comment
 from flask_login import LoginManager
 import models
 
@@ -36,6 +37,8 @@ def after_request(response):
 
 CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(user, url_prefix='/api/v1/users')
+CORS(comment, origins=['http://localhost:3000'], supports_credentials=True)
+app.register_blueprint(comment, url_prefix='/api/v1/comments')
 
 # @app.route('/')
 # def index():
