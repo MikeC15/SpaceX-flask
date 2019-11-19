@@ -29,7 +29,6 @@ def register():
 @user.route('/login', methods=['POST'])
 def login():
     payload = request.get_json()
-    error_msg = "email or password incorrect"
     try: #find the user
         user = models.User.get(models.User.email ** payload['email'])
         user_dict = model_to_dict(user)
