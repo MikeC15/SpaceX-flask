@@ -41,3 +41,18 @@ def get_one_comment(id):
     print("COMMENT-ID:",id)
     comment = models.Comment.get_by_id(id)
     return jsonify(data=model_to_dict(comment), status={"code": 200, "message": "success"})
+
+#delete route HITS ROUTE BUT NOT ACTUALLY DELETING
+@comment.route('/<id>', methods=["DELETE"])
+def delete_comment(id):
+    comment_to_delete = models.Comment.get(id=id)
+    if not current_user.is_authenticated: # Checks if user is logged in
+        return jsonify(data={}, status={'code': 401, 'message': 'You must be logged in to delete a comment'})
+    if comment_to_delete.user.id is not current_user.id: 
+        return jsonify(data={}, status={'code': 401, 'message': 'You can only delete comments you wrote'})
+    # Delete the comment and send success response back to user
+    print("DELETED:", comment_to_delete)
+    comment_to_delete.delete_instance()
+    return jsonify(data='comment successfully deleted', status={"code": 200, "message": "comment deleted successfully"})
+
+#update route???
