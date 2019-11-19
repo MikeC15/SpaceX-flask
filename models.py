@@ -15,6 +15,7 @@ class User(UserMixin, Model):
 
 class Comment(Model):
     content = CharField()
+    likes = IntegerField()
     user = ForeignKeyField(User, related_name='comments')
     created_at = DateTimeField(default=datetime.datetime.now)
 
