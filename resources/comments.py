@@ -9,7 +9,7 @@ comment = Blueprint('comments', 'comment')
 @comment.route('/', methods=["GET"])
 def get_all_comments():
     print('REQUEST.COOKIES:',request.cookies)
-    print('CURRENTUSER:',model_to_dict(current_user))
+    # print('CURRENTUSER:',model_to_dict(current_user)) //THIS CAUSES CORS BLOCK WHEN NOT LOGGED IN, GOOD FOR EDITING AND ADDING BAD FOR SEEING, due to no such thing as currentuser
     try:
         comments = [model_to_dict(comment) for comment in models.Comment.select()]
         print("COMMENTS:", comments)
@@ -42,7 +42,7 @@ def get_one_comment(id):
     comment = models.Comment.get_by_id(id)
     return jsonify(data=model_to_dict(comment), status={"code": 200, "message": "success"})
 
-#delete route HITS ROUTE BUT NOT ACTUALLY DELETING
+#delete route 
 @comment.route('/<id>', methods=["DELETE"])
 def delete_comment(id):
     comment_to_delete = models.Comment.get(id=id)
@@ -55,7 +55,7 @@ def delete_comment(id):
     comment_to_delete.delete_instance()
     return jsonify(data='comment successfully deleted', status={"code": 200, "message": "comment deleted successfully"})
 
-#update route???
+#update route
 @comment.route('/<id>', methods=["PUT"])
 def update_comment(id):
     payload = request.get_json()

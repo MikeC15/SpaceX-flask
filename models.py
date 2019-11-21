@@ -8,6 +8,7 @@ DATABASE = SqliteDatabase('spacex.sqlite')
 class User(UserMixin, Model):
     email = CharField(unique=True)
     password = CharField()
+    username = CharField(unique=True)
 
     class Meta:
         db_tables = 'users'
@@ -16,7 +17,7 @@ class User(UserMixin, Model):
 class Comment(Model):
     content = CharField()
     likes = IntegerField()
-    flight_number = IntegerField()
+    flight_number = CharField()
     user = ForeignKeyField(User, related_name='comments')
     created_at = DateTimeField(default=datetime.datetime.now)
 
