@@ -1,8 +1,14 @@
+import os #for deployment
+from playhouse.db_url import connect#deploymeny
 import datetime
 from peewee import *
 from flask_login import UserMixin
 
-DATABASE = SqliteDatabase('spacex.sqlite')
+#use if line if live, else in development
+if 'ON_HEROKU' in os.environ:
+    DATABASE = connect(os.environ.get('DATABASE_URL'))
+else:
+    DATABASE = SqliteDatabase('spacex.sqlite')
 
 
 class User(UserMixin, Model):
