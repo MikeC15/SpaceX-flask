@@ -58,15 +58,19 @@ def delete_comment(id):
 #update route
 @comment.route('/<id>', methods=["PUT"])
 def update_comment(id):
+    # print(id)
     payload = request.get_json()
     comment_to_update = models.Comment.get(id=id)
+    # print("COMMENTTOUPDATE:", comment_to_update)
     if not current_user.is_authenticated:
         return jsonify(data={}, status={'code': 401, 'message': 'You must be logged in to edit a comment'})
     if comment_to_update.user.id is not current_user.id: 
         return jsonify(data={}, status={'code': 401, 'message': 'You can only update comments you wrote'})
     comment_to_update.update(
         content=payload['content']
-    ).execute()
-    update_comment_dict = model_to_dict(comment_to_update, max_depth=0)
-    print("UPDATECOMMENTDICT:", update_comment_dict)
+    ).where(models.Comment.id == id).execute()
+    updated_comment = models.Comment.get(id=id)
+    # print("UPDATED COMMMENT:", updated_comment)
+    update_comment_dict = model_to_dict(updated_comment, max_depth=0)
+    # print("UPDATECOMMENTDICT:", update_comment_dict)
     return jsonify(status={'code': 200, 'msg': 'successfully edited'}, data=update_comment_dict)

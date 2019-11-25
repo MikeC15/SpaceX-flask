@@ -30,6 +30,8 @@ class Comment(Model):
     class Meta:
         db_tables = 'comments'
         database = DATABASE
+    def __str__(self):
+        return "<Comment: {}, id: {}>".format(self.content, self.id)
 
 
 def initialize():
